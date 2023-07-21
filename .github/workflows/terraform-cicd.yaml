@@ -34,14 +34,14 @@ jobs:
           run: terraform fmt -check
           shell: bash
 
-        - name: Terraform validate
-          id: validate
-          run: terraform validate
-          shell: bash
-
         - name: Terraform Init
           id: init
           run: terraform init
+          shell: bash
+
+        - name: Terraform validate
+          id: validate
+          run: terraform validate
           shell: bash
 
         - name: Terraform Plan
