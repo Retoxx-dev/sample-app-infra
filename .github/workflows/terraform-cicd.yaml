@@ -93,7 +93,7 @@ jobs:
                 });
               } else {
                 await github.rest.issues.createComment({
-                  issue_number: context.issue.number,
+                  issue_number: issueNumber,
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   body: output,
