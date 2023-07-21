@@ -88,7 +88,7 @@ jobs:
                 await github.rest.issues.updateComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  comment_id: comment.id,
+                  comment_id: tfcomment.id,
                   body: output,
                 });
               } else {
