@@ -72,19 +72,25 @@ jobs:
   
               *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
   
-              const comment = comments.find(comment => {
+              const comments = await github.rest.issues.getComments({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+
+              const tfcomment = comments.find(comment => {
                 return comment.body.includes('Terraform Plan');
               });
 
               if (comment) {
-                github.rest.issues.updateComment({
+                await github.rest.issues.updateComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   comment_id: comment.id,
                   body: output,
                 });
               } else {
-                github.rest.issues.createComment({
+                await github.rest.issues.createComment({
                   issue_number: context.issue.number,
                   owner: context.repo.owner,
                   repo: context.repo.repo,
