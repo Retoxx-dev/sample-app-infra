@@ -2,100 +2,108 @@
 name: Terraform CICD
 
 on:
-    pull_request:
-        branches:
-            - master
-    
+  pull_request:
+    branches:
+      - main
+
 defaults:
-    run:
-        working-directory: Terraform
+  run:
+    working-directory: Terraform
 
 env:
-    ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-    ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-    ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-    
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
 jobs:
     plan:
-        name: Terraform Plan
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+      name: Terraform Plan
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
 
-            - name: Setup Terraform
-              uses: hashicorp/setup-terraform@v2
-              with:
-                terraform_version: 1.5.3
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v2
+          with:
+            terraform_version: 1.5.3
 
-            - name: Terraform Format
-              id: fmt
-              run: terraform fmt -check
-              shell: bash
+        - name: Terraform Format
+          id: fmt
+          run: terraform fmt -check
+          shell: bash
 
-            - name: Terraform validate
-              id: validate
-              run: terraform validate
+        - name: Terraform Init
+          id: init
+          run: terraform init
+          shell: bash
 
-            - name: Terraform Init
-              id: init
-              run: terraform init
-              shell: bash
+        - name: Terraform validate
+          id: validate
+          run: terraform validate
+          shell: bash
 
-            - name: Terraform Plan
-              id: plan
-              run: terraform plan -no-color -input=false
-              continue-on-error: true
-              shell: bash
+        - name: Terraform Plan
+          id: plan
+          run: terraform plan -no-color -input=false
+          continue-on-error: true
+          shell: bash
 
-            - name: Terraform Plan Output to Pull Request
-              uses: actions/github-script@v6
-              env:
-                PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-              with:
-                github-token: ${{ secrets.GITHUB_TOKEN }}
-                script: |
-                  const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-                  #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-                  #### Terraform Validation ✅\`${{ steps.validate.outcome }}\`
-                  #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-      
-                  <details><summary>Show Plan</summary>
-      
-                  \`\`\`\n
-                  ${process.env.PLAN}
-                  \`\`\`
-      
-                  </details>
-      
-                  *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-      
-                  const commentId = await github.rest.issues.getComment({
-                    issue_number: context.issue.number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    comment_id: context.payload.comment.id,
-                  });
+        - name: Terraform Plan Output to Pull Request
+          uses: actions/github-script@v6
+          env:
+            PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+              #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+              #### Terraform Validation ✅\`${{ steps.validate.outcome }}\`
+              #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
   
-                  if (commentId) {
-                    await github.rest.issues.updateComment({
-                      comment_id: commentId,
-                      body: output,
-                    });
-                  } else {
-                    await github.rest.issues.createComment({
-                      issue_number: context.issue.number,
-                      owner: context.repo.owner,
-                      repo: context.repo.repo,
-                      body: output,
-                    });
-                  }
+              <details><summary>Show Plan</summary>
+  
+              \`\`\`\n
+              ${process.env.PLAN}
+              \`\`\`
+  
+              </details>
+  
+              *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+  
+              const issueNumber = context.issue.number;
 
-            - name: Terraform Plan Status
-              if: steps.plan.outcome == 'failure'
-              run: exit 1
-    
+              const {data: comments} = await github.rest.issues.listComments({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+              })
+
+              const tfcomment = comments.find(comment => {
+                return comment.body.includes('Terraform Plan');
+              });
+
+              if (tfcomment) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: tfcomment.id,
+                  body: output,
+                });
+              } else {
+                await github.rest.issues.createComment({
+                  issue_number: issueNumber,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: output,
+                });
+              }
+
+        - name: Terraform Plan Status
+          if: steps.plan.outcome == 'failure'
+          run: exit 1
+
     apply:
         name: Terrafom Apply
         needs: plan
@@ -103,18 +111,19 @@ jobs:
         runs-on: ubuntu-latest
         environment: "Terraform"
         steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+          - name: Checkout
+            uses: actions/checkout@v3
 
-            - name: Setup Terraform
-              uses: hashicorp/setup-terraform@v2
-              with:
-                terraform_version: 1.5.3
-              
-            - name: Terraform Init
-              id: init
-              run: terraform init
-              shell: bash
+          - name: Setup Terraform
+            uses: hashicorp/setup-terraform@v2
+            with:
+              terraform_version: 1.5.3
+            
+          - name: Terraform Init
+            id: init
+            run: terraform init
+            shell: bash
 
-            - name: Terraform Apply
-              run: terraform apply -auto-approve -input=false
+          - name: Terraform Apply
+            run: terraform apply -auto-approve -input=false
+            shell: bash
