@@ -72,7 +72,7 @@ jobs:
   
               *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
   
-              const commentId = await github.rest.issues.getComment({
+              const commentId = github.rest.issues.getComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -80,12 +80,12 @@ jobs:
               });
 
               if (commentId) {
-                await github.rest.issues.updateComment({
+                github.rest.issues.updateComment({
                   comment_id: commentId,
                   body: output,
                 });
               } else {
-                await github.rest.issues.createComment({
+                github.rest.issues.createComment({
                   issue_number: context.issue.number,
                   owner: context.repo.owner,
                   repo: context.repo.repo,
