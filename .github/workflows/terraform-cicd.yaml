@@ -72,16 +72,16 @@ jobs:
   
               *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
   
-              const commentId = github.rest.issues.getComment({
+              const comment = github.rest.issues.getComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: context.payload.comment.id,
               });
 
-              if (commentId) {
+              if (comment) {
                 github.rest.issues.updateComment({
-                  comment_id: commentId,
+                  comment_id: comment.id,
                   body: output,
                 });
               } else {
