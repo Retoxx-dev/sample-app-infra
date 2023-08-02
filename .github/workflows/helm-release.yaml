@@ -96,6 +96,6 @@ jobs:
 
       - name: Push Helm Chart to Azure Container Registry
         run: |
-          helm push ${{ matrix.chart }}*.tgz oci://$CONTAINER_REGISTRY_URI/helm${{ matrix.chart }}
+          helm push ${{ matrix.chart }}*.tgz oci://$CONTAINER_REGISTRY_URI/helm
       
       
