@@ -1,0 +1,101 @@
+---
+name: Helm Release
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'helm/charts/**'
+
+defaults:
+  run:
+    working-directory: helm/charts
+
+env:
+  CONTAINER_REGISTRY_URI: acrsampleappneu.azurecr.io
+      
+jobs:
+  prepchanges:
+    name: Prepare file changes
+    runs-on: ubuntu-latest
+    outputs:
+      charts: ${{ steps.calculate_charts.outputs.charts }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Determine folder changes
+        id: folder_changes
+        run: |
+            EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+            echo "changes<<${EOF}" >> $GITHUB_OUTPUT
+            echo "$(git diff --name-only ${{ github.head_ref.sha }} ${{ github.sha }} | tr '\n' ',')" >> $GITHUB_OUTPUT
+            echo "${EOF}" >> $GITHUB_OUTPUT
+
+      - name: Calculate charts
+        id: calculate_charts
+        run: |
+            EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+            echo "charts<<${EOF}" >> $GITHUB_OUTPUT
+            CHARTS=($(echo "${{ steps.folder_changes.outputs.changes }}" | tr ',' '\n'))
+            DECLARED_CHARTS=("client")
+            CHARTS=()
+            for ENV in "${DECLARED_CHARTS[@]}"; do
+                for FOLDER in "${FOLDERS[@]}"; do
+                    if [[ $FOLDER =~ ^terragrunt/$ENV/ ]]; then
+                    CHARTS+=("$ENV")
+                        break
+                    fi
+                done
+            done
+            CHARTS_JSON="["
+            for ((i=0; i<${#CHARTS[@]}; i++)); do
+                if [[ $i -gt 0 ]]; then
+                    CHARTS_JSON+=","
+                fi
+                CHARTS_JSON+="\"${CHARTS[$i]}\""
+            done
+            CHARTS_JSON+="]"
+            echo "${CHARTS_JSON}" >> $GITHUB_OUTPUT
+            echo "${EOF}" >> $GITHUB_OUTPUT
+
+      - name: Test
+        run: |
+            echo "Changes: ${{ steps.folder_changes.outputs.changes }}"
+            echo "Charts: ${{ steps.calculate_charts.outputs.charts }}"
+              
+  # build:
+  #   name: Build Helm Chart
+  #   needs: prepchanges
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       chart: ${{ fromJson(needs.prepchanges.outputs.charts) }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+
+  #     - name: Install Helm
+  #       uses: azure/setup-helm@v3
+  #       with:
+  #         version: 'v3.5.4'
+
+  #     - name: Build Helm Chart
+  #       run: |
+  #         helm package ${{ matrix.chart }}
+
+  #     - name: Login to Azure
+  #       uses: azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+  #     - name: Login to Azure Container Registry
+  #       run: az acr login --name $CONTAINER_REGISTRY_URI
+
+  #     - name: Push Helm Chart to Azure Container Registry
+  #       run: |
+  #         helm push ${{ matrix.chart }} $CONTAINER_REGISTRY_URI
+      
+      
