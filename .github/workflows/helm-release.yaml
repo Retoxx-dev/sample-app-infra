@@ -42,10 +42,10 @@ jobs:
             CHARTS=($(echo "${{ steps.folder_changes.outputs.changes }}" | tr ',' '\n'))
             DECLARED_CHARTS=("client")
             CHARTS=()
-            for ENV in "${DECLARED_CHARTS[@]}"; do
+            for CHART in "${DECLARED_CHARTS[@]}"; do
                 for FOLDER in "${FOLDERS[@]}"; do
-                    if [[ $FOLDER =~ ^terragrunt/$ENV/ ]]; then
-                    CHARTS+=("$ENV")
+                    if [[ $FOLDER =~ ^helm/$CHART/ ]]; then
+                    CHARTS+=("$CHART")
                         break
                     fi
                 done
