@@ -66,36 +66,36 @@ jobs:
             echo "Changes: ${{ steps.folder_changes.outputs.changes }}"
             echo "Charts: ${{ steps.calculate_charts.outputs.charts }}"
               
-  # build:
-  #   name: Build Helm Chart
-  #   needs: prepchanges
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       chart: ${{ fromJson(needs.prepchanges.outputs.charts) }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+  build:
+    name: Build Helm Chart
+    needs: prepchanges
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        chart: ${{ fromJson(needs.prepchanges.outputs.charts) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  #     - name: Install Helm
-  #       uses: azure/setup-helm@v3
-  #       with:
-  #         version: 'v3.5.4'
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.5.4'
 
-  #     - name: Build Helm Chart
-  #       run: |
-  #         helm package ${{ matrix.chart }}
+      - name: Build Helm Chart
+        run: |
+          helm package ${{ matrix.chart }}
 
-  #     - name: Login to Azure
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  #     - name: Login to Azure Container Registry
-  #       run: az acr login --name $CONTAINER_REGISTRY_URI
+      - name: Login to Azure Container Registry
+        run: az acr login --name $CONTAINER_REGISTRY_URI
 
-  #     - name: Push Helm Chart to Azure Container Registry
-  #       run: |
-  #         helm push ${{ matrix.chart }} $CONTAINER_REGISTRY_URI
+      - name: Push Helm Chart to Azure Container Registry
+        run: |
+          helm push ${{ matrix.chart }}*.tgz oci://$CONTAINER_REGISTRY_URI/helm${{ matrix.chart }}
       
       

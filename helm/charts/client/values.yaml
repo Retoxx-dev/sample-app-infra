@@ -60,4 +60,3 @@ livenessProbe:
   periodSeconds: 30
   successThreshold: 1
   failureThreshold: 5
-  
