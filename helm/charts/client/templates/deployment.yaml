@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.app }}-{{ .Values.environment}}"
+  labels:
+    app: "{{ .Values.app }}"
+    environment: "{{ .Values.environment }}"
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: "{{ .Values.app }}"
+      environment: "{{ .Values.environment }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.app }}"
+        environment: "{{ .Values.environment }}"
+    spec:
+      containers:
+      - name: application
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.service.internalPort }}
+        readinessProbe:
+          {{- with .Values.readinessProbe }}
+          initialDelaySeconds: {{ .initialDelaySeconds }}
+          timeoutSeconds: {{ .timeoutSeconds }}
+          periodSeconds: {{ .periodSeconds }}
+          successThreshold: {{ .successThreshold }}
+          failureThreshold: {{ .failureThreshold }}
+          {{- end }}
+          httpGet:
+            path: {{ .Values.readinessProbe.path }}
+            port: {{ .Values.service.internalPort }}
+        livenessProbe:
+          {{- with .Values.livenessProbe }}
+          initialDelaySeconds: {{ .initialDelaySeconds }}
+          timeoutSeconds: {{ .timeoutSeconds }}
+          periodSeconds: {{ .periodSeconds }}
+          successThreshold: {{ .successThreshold }}
+          failureThreshold: {{ .failureThreshold }}
+          {{- end }}
+          httpGet:
+            path: {{ .Values.livenessProbe.path }}
+            port: {{ .Values.service.internalPort }}
+        
