@@ -44,7 +44,7 @@ jobs:
             CHARTS=()
             for CHART in "${DECLARED_CHARTS[@]}"; do
                 for FOLDER in "${FOLDERS[@]}"; do
-                    if [[ $FOLDER =~ ^helm/$CHART/ ]]; then
+                    if [[ $FOLDER =~ ^helm/charts/$CHART/ ]]; then
                     CHARTS+=("$CHART")
                         break
                     fi
