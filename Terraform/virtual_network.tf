@@ -16,6 +16,9 @@ module "virtual-network" {
     {
       name             = "snet-${local.naming_convention_dash}-postgres"
       address_prefixes = ["10.0.255.224/27"]
+      service_endpoints = [
+        "Microsoft.Storage"
+      ]
       subnet_delegations = [
         {
           name         = "PostgreSQLDelegation"

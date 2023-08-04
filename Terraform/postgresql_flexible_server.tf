@@ -18,6 +18,7 @@ module "postgresql-flexible-server" {
   private_dns_zone_id = azurerm_private_dns_zone.this.id
   sku_name            = "B_Standard_B1ms"
   storage_mb          = "32768"
+  zone                = 1
 
   authentication = {
     active_directory_auth_enabled = true
