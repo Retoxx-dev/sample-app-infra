@@ -40,7 +40,7 @@ jobs:
             EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
             echo "charts<<${EOF}" >> $GITHUB_OUTPUT
             FOLDERS=($(echo "${{ steps.folder_changes.outputs.changes }}" | tr ',' '\n'))
-            DECLARED_CHARTS=("client" "core")
+            DECLARED_CHARTS=("base")
             CHARTS=()
             for CHART in "${DECLARED_CHARTS[@]}"; do
                 for FOLDER in "${FOLDERS[@]}"; do
