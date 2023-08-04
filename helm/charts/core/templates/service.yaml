@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Values.app }}-{{ .Values.environment }}"
+  labels:
+    app: {{ .Values.app }}
+    environment: {{ .Values.environment }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.service.externalPort }}
+      targetPort: {{ .Values.service.internalPort }}
+      name: http
+  selector:
+    app: {{ .Values.app }}
+    environment: {{ .Values.environment }}
