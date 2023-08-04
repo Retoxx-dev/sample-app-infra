@@ -3,8 +3,8 @@ module "container-registry" {
   version = "1.0.1"
 
   resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
+  location            = local.location
 
-  name = "acrsampleapp001"
+  name = "acr${replace(local.naming_convention_dash, "-", "")}"
   sku  = "Standard"
 }
