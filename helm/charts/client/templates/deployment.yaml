@@ -46,5 +46,5 @@ spec:
             path: {{ .Values.livenessProbe.path }}
             port: {{ .Values.service.internalPort }}
         envFrom:
-          - secretRef
+          - secretRef:
               name: "{{ .Values.app }}-{{ .Values.environment }}-env"
