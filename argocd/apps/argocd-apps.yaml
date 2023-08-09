@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  sources:
+    - repoURL: 'https://argoproj.github.io/argo-helm'
+      targetRevision: 1.12.3
+      chart: argocd-apps
+      helm:
+        valueFiles:
+          - $values/argocd/helmvalues/argocd-apps/values.yaml
+    - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
