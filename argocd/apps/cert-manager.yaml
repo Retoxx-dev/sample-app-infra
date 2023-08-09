@@ -30,3 +30,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+  ignoreDifferences: #https://github.com/cert-manager/cert-manager/issues/4114
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      name: cert-manager-webhook
+      jqPathExpressions:
+        - .webhooks[].namespaceSelector.matchExpressions[] | select(.key == "control-plane")
