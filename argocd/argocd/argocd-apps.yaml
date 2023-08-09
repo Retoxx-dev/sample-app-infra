@@ -1,0 +1,118 @@
+applications:
+- name: apps
+  namespace: argocd
+  additionalAnnotations:
+    argocd.argoproj.io/sync-wave: "-10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  project: argo
+  source:
+    repoURL: https://github.com/Retoxx-dev/sample-app-infra.git
+    targetRevision: HEAD
+    path: argocd/apps
+  destination:
+    server: &defaultServer https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+projects:
+  - name: argo
+    namespace: argocd
+    additionalAnnotations:
+      argocd.argoproj.io/sync-wave: "-20"
+    finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    description: Argo workloads such as Argo CD, Argo Rollouts, Argo Workflows, etc
+    sourceRepos:
+      - '*'
+    destinations:
+      - namespace: argocd
+        server: *defaultServer
+    namespaceResourceWhitelist:
+      - group: 'argoproj.io'
+        kind: AppProject
+      - group: 'argoproj.io'
+        kind: Application
+      - group: 'argoproj.io'
+        kind: ApplicationSet
+  - name: system
+    namespace: argocd
+    additionalAnnotations:
+      argocd.argoproj.io/sync-wave: "-20"
+    finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    description: Extensions, controllers and addons necessary for the proper operation of the EKS cluster
+    sourceRepos:
+      - '*'
+    destinations:
+      - namespace: '*'
+        server: *defaultServer
+    clusterResourceWhitelist:
+      - group: '*'
+        kind: '*'
+  - name: monitoring
+    namespace: argocd
+    additionalAnnotations:
+      argocd.argoproj.io/sync-wave: "-20"
+    finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    description: Cluster monitoring applications like grafana, prometheus, etc
+    sourceRepos:
+      - '*'
+    destinations:
+      - namespace: monitoring
+        server: *defaultServer
+      - namespace: pgadmin
+        server: *defaultServer
+      - namespace: kube-system
+        server: *defaultServer
+    clusterResourceWhitelist:
+      - group: '*'
+        kind: Namespace
+      - group: '*'
+        kind: ClusterRoleBinding
+      - group: '*'
+        kind: ClusterRole
+      - group: '*'
+        kind: CustomResourceDefinition
+      - group: '*'
+        kind: ValidatingWebhookConfiguration
+      - group: '*'
+        kind: MutatingWebhookConfiguration
+  - name: production
+    namespace: argocd
+    additionalAnnotations:
+      argocd.argoproj.io/sync-wave: "-20"
+    description: PRODUCTION environment for application workloads
+    sourceRepos:
+      - '*'
+    destinations:
+      - namespace: sample-app-client-prod
+        server: *defaultServer
+      - namespace: sample-app-core-prod
+        server: *defaultServer
+      - namespace: sample-app-messaging-prod
+        server: *defaultServer
+    clusterResourceWhitelist:
+    - group: '*'
+      kind: Namespace
+  - name: dev
+    namespace: argocd
+    additionalAnnotations:
+      argocd.argoproj.io/sync-wave: "-20"
+    description: DEV environment for application workloads
+    sourceRepos:
+      - '*'
+    destinations:
+      - namespace: sample-app-client-dev
+        server: *defaultServer
+      - namespace: sample-app-core-dev
+        server: *defaultServer
+      - namespace: sample-app-messaging-dev
+        server: *defaultServer
+    clusterResourceWhitelist:
+      - group: '*'
+        kind: Namespace

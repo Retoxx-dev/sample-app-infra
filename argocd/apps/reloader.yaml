@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reloader
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: system
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: reloader
+  sources:
+    - repoURL: 'https://stakater.github.io/stakater-charts'
+      targetRevision: 1.0.24
+      chart: reloader
+      helm:
+        valueFiles:
+          - $values/argo-cd/helmvalues/reloader.yaml
+    - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
