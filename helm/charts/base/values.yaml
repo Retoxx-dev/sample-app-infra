@@ -30,18 +30,18 @@ autoscaling:
 # Set the environment
 environment:
 
-# Specify the hostname
-hostname:
+# Set the ingress config
+ingress:
+  enabled: false
+  hostname:
 
 # Set the service external port and internal container port
 service:
+  enabled: true
   externalPort:
   internalPort:
 
 # Set the probe value type
-  # probe:
-  #   type: exec
-  #   command: []
 hpa:
   enabled: true
 
@@ -53,6 +53,7 @@ readinessProbe:
   periodSeconds: 30
   successThreshold: 1
   failureThreshold: 3
+  path: /
 
 livenessProbe:
   initialDelaySeconds: 30
@@ -60,3 +61,4 @@ livenessProbe:
   periodSeconds: 30
   successThreshold: 1
   failureThreshold: 5
+  path: /
