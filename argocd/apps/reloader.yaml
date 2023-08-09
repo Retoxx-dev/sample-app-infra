@@ -17,7 +17,7 @@ spec:
       chart: reloader
       helm:
         valueFiles:
-          - $values/argo-cd/helmvalues/reloader.yaml
+          - $values/argocd/helmvalues/reloader.yaml
     - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
       targetRevision: HEAD
       ref: values
