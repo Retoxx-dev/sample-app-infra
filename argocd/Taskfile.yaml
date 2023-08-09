@@ -1,0 +1,25 @@
+version: '3'
+
+dotenv: ['.env']
+
+tasks:
+  argocd:deploy:
+    desc: Deploy ArgoCD
+    cmds:
+      - helm repo add argo https://argoproj.github.io/argo-helm
+      - helm install argocd argo/argo-cd -n argocd --create-namespace -f ./argocd/argocd.yaml --version 5.43.2
+      - helm install argocd-apps argo/argocd-apps -n argocd --create-namespace -f ./argocd/argocd-apps.yaml --version 1.4.1
+
+  argocd:helmrepo:creds:
+    desc: Add helm ACR repo creds
+    cmds:
+      - kubectl create secret generic creds-https-$HELM_REPO_NAME -n argocd --from-literal=name=$HELM_REPO_NAME --from-literal=url=$HELM_REPO_URL --from-literal=username=$HELM_REPO_USERNAME --from-literal=password=$HELM_REPO_PASSWORD --from-literal=enableOCI="true" --from-literal=type="helm"
+      - kubectl label secret creds-https-$HELM_REPO_NAME -n argocd argocd.argoproj.io/secret-type=repo-creds
+      - kubectl annotate secret creds-https-$HELM_REPO_NAME -n argocd managed-by=argocd.argoproj.io
+
+  argocd:gitrepo:creds:
+    desc: Add git repo HTTPS creds
+    cmds:
+      - kubectl create secret generic creds-https-$GIT_REPO_NAME -n argocd --from-literal=username=username --from-literal=password=$GIT_REPO_PASSWORD
+      - kubectl label secret creds-https-$GIT_REPO_NAME -n argocd argocd.argoproj.io/secret-type=repo-creds
+      - kubectl annotate secret creds-https-$GIT_REPO_NAME -n argocd managed-by=argocd.argoproj.io
