@@ -1,0 +1,8 @@
+# https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
+controller:
+  service:
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
+    
+    # External IP address of the load balancer given by Azure during cluster creation
+    loadBalancerIP: "20.123.118.84"
