@@ -24,7 +24,7 @@ module "key-vault" {
     }
   ]
 
-  self_service_principal_id = "6b0481ff-2883-4ac9-ba47-3a8d7ba65d5f"
+  self_service_principal_id = "945fbe56-103c-44d4-868d-0b40bff00eb0"
 
   network_acls = {
     bypass                     = "AzureServices"
