@@ -1,0 +1,2 @@
+installCRDs: true
+# TODO: Add affinity and tolerations for external-secrets, certController and webhook
