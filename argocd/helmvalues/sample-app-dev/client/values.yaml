@@ -1,0 +1,28 @@
+app: sample-app-client
+image:
+  repository: acrsampleappneu.azurecr.io/client
+  tag: dev
+
+environment: dev
+
+ingress:
+  enabled: true
+  hostname: dev.dziedzic.me
+
+replicas: 1
+
+service:
+  enabled: true
+  externalPort: 3000
+  internalPort: 3000
+
+readinessProbe:
+  path: /
+  initialDelaySeconds: 10
+livenessProbe:
+  path: /
+  initialDelaySeconds: 15
+
+autoscaling:
+  maxReplicas: 1
+  minReplicas: 1

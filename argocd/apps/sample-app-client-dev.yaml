@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-app-client-dev
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: sample-app-client-dev
+  sources:
+    - repoURL: 'acrsampleappneu.azurecr.io'
+      targetRevision: 0.0.2
+      chart: helm/base
+      helm:
+        valueFiles:
+          - $values/argocd/helmvalues/sample-app-dev/client/values.yaml
+    - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
