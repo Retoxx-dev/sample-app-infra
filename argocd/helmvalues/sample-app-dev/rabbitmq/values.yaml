@@ -1,0 +1,3 @@
+auth:
+  username: rabbitmq-dev
+  existingPasswordSecret: rabbitmq-password-dev
