@@ -7,7 +7,7 @@ environment: dev
 
 ingress:
   enabled: true
-  hostname: api.dziedzic.me
+  hostname: api.dev.dziedzic.me
 
 replicas: 1
 
