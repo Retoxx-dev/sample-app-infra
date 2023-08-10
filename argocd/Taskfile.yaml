@@ -6,9 +6,14 @@ tasks:
   argocd:deploy:
     desc: Deploy ArgoCD
     cmds:
+      - helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+      - helm install ingress ingress-nginx/ingress-nginx -n ingress --create-namespace -f ./helmvalues/ingress/values.yaml --version 4.7.1
+      - helm repo add jetstack https://charts.jetstack.io
+      - helm install cert-manager jetstack/cert-manager -n cert-manager --create-namespace -f ./helmvalues/cert-manager/values.yaml --version 1.12.3
+      - kubectl apply -f ./helmvalues/cert-manager/cluster-issuer.yaml
       - helm repo add argo https://argoproj.github.io/argo-helm
-      - helm install argocd argo/argo-cd -n argocd --create-namespace -f ./argocd/argocd.yaml --version 5.43.2
-      - helm install argocd-apps argo/argocd-apps -n argocd --create-namespace -f ./argocd/argocd-apps.yaml --version 1.4.1
+      - helm install argocd argo/argo-cd -n argocd --create-namespace -f ./helmvalues/argocd/values.yaml --version 5.43.2
+      - helm install argocd-apps argo/argocd-apps -n argocd --create-namespace -f ./helmvalues/argocd-apps/values.yaml --version 1.4.1
 
   argocd:helmrepo:creds:
     desc: Add helm ACR repo creds
@@ -23,3 +28,10 @@ tasks:
       - kubectl create secret generic creds-https-$GIT_REPO_NAME -n argocd --from-literal=username=username --from-literal=password=$GIT_REPO_PASSWORD
       - kubectl label secret creds-https-$GIT_REPO_NAME -n argocd argocd.argoproj.io/secret-type=repo-creds
       - kubectl annotate secret creds-https-$GIT_REPO_NAME -n argocd managed-by=argocd.argoproj.io
+
+  uninstall:
+    cmds:
+      - helm uninstall argocd-apps -n argocd
+      - helm uninstall argocd -n argocd
+      - helm uninstall cert-manager -n cert-manager
+      - helm uninstall ingress -n ingress

@@ -5,6 +5,9 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - 'Terraform/**'
+      - '.github/workflows/terraform-cicd.yaml'
 
 defaults:
   run:
