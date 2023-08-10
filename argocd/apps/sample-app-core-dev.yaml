@@ -12,9 +12,9 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: sample-app-core-dev
   sources:
-    - repoURL: 'https://acrsampleappneu.azurecr.io/helm'
+    - repoURL: 'https://acrsampleappneu.azurecr.io'
       targetRevision: 0.0.2
-      chart: base
+      chart: helm/base
       helm:
         valueFiles:
           - $values/argocd/helmvalues/sample-app-dev/core/values.yaml
