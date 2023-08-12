@@ -1,6 +1,8 @@
 updateStrategy:
   type: RollingUpdate
 
-extraEnv:
-  - name: AZURE_CLIENT_ID
-    value: 4276939c-9d80-4418-86f6-ef0bea94e8b8
+registries:
+  - name: ACR
+    api_url: https://acrsampleappneu.azurecr.io
+    ping: yes
+    credentials: env:argocd-image-updater-acr-creds
