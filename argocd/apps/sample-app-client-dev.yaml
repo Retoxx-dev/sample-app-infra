@@ -15,9 +15,9 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: sample-app-client-dev
   source:
-    repoURL: 'acrsampleappneu.azurecr.io'
+    repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git/helm/charts'
     targetRevision: 0.0.2
-    chart: helm/base
+    chart: base
     helm:
       values: |
         app: sample-app-client
