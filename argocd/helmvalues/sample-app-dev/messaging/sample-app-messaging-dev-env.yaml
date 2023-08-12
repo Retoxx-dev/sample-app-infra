@@ -1,17 +1,17 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: rabbitmq-password-dev
-  namespace: rabbitmq-dev
+  name: sample-app-messaging-dev-env
+  namespace: sample-app-messaging-dev
 spec:
   refreshInterval: 24h
   secretStoreRef:
     name: azure-cluster-secret-store
     kind: ClusterSecretStore
   target:
-    name: "rabbitmq-password-dev"
+    name: sample-app-messaging-dev-env
     creationPolicy: Owner
-  data:
-    - secretKey: rabbitmq-password
-      remoteRef:
-        key: rabbitmq-password-dev
+  dataFrom:
+  - extract:
+      key: sample-app-messaging-dev-env
+      decodingStrategy: None

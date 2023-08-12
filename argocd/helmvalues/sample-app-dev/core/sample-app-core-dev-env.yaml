@@ -4,7 +4,7 @@ metadata:
   name: sample-app-core-dev-env
   namespace: sample-app-core-dev
 spec:
-  refreshInterval: 1h
+  refreshInterval: 24h
   secretStoreRef:
     name: azure-cluster-secret-store
     kind: ClusterSecretStore
