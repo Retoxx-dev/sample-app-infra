@@ -15,7 +15,7 @@ module "role-assignments" {
     },
     {
       scope = module.container-registry.id
-      principal_ids = [ 
+      principal_ids = [
         module.kubernetes-cluster.nodepool_identity_object_id
       ]
       role_names = ["AcrPull"]
