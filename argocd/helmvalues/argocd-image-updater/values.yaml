@@ -7,7 +7,7 @@ config:
       prefix: acrsampleappneu.azurecr.io
       api_url: https://acrsampleappneu.azurecr.io
       ping: yes
-      credentials: pullsecret:argocd/argocd-image-updater-acr-creds
+      credentials: ext:/scripts/acrauth.sh
       default: yes
 
 authScripts:
