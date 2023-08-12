@@ -45,12 +45,3 @@ configs:
       name: sample-app-infra
       type: git
       url: https://github.com/Retoxx-dev/sample-app-infra.git
-  
-  cm:
-    accounts.image-updater: apiKey
-
-  rbac:
-    policy.csv: |
-      p, role:image-updater, applications, get, */*, allow
-      p, role:image-updater, applications, update, */*, allow
-      g, image-updater, role:image-updater
