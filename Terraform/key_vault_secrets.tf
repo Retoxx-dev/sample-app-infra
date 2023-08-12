@@ -15,6 +15,9 @@ module "key-vault-secrets" {
     #################################################################
     {
       name = "sample-app-core-dev-env"
+    },
+    {
+      name = "sample-app-messaging-dev-env"
     }
   ]
 }
