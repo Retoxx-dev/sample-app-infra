@@ -4,5 +4,5 @@ helm:
     value: acrsampleappneu.azurecr.io/client
     forcestring: true
   - name: image.tag
-    value: dev@sha256:c683253dd92fd4f2e623dadc67feb2da059d5b9658c37b69b3478013696b9eaf
+    value: dev-f0dae33
     forcestring: true
