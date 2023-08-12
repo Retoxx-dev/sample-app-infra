@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-    argocd-image-updater.argoproj.io/image-list: client=acrsampleappneu.azurecr.io/client
+    argocd-image-updater.argoproj.io/image-list: client=acrsampleappneu.azurecr.io/client:dev
     argocd-image-updater.argoproj.io/client.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: git
 spec:
