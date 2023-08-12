@@ -43,4 +43,4 @@ configs:
     helm-sample-app-infra:
       name: helm-sample-app-infra
       type: helm
-      url: https://raw.githubusercontent.com/Retoxx-dev/sample-app-helm-repo/main
+      url: https://raw.githubusercontent.com/Retoxx-dev
