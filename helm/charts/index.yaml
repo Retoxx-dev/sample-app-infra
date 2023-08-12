@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  base:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-08-12T22:29:35.5549145+02:00"
+    description: A Helm chart for sample-app microservices
+    digest: 9faf6dfd857b6f18659df728fc1f7fff0f5c917d759980356fab53d398f31a8a
+    name: base
+    type: application
+    urls:
+    - base-0.0.2.tgz
+    version: 0.0.2
+generated: "2023-08-12T22:29:35.5542572+02:00"
