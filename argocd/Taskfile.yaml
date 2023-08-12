@@ -34,11 +34,6 @@ tasks:
     cmds:
       - argocd login $ARGOCD_SERVER_URL
 
-  argocd:imageupdater:pullsecret:
-    desc: Add ACR secret for ArgoCD Image Updater
-    cmds:
-      - kubectl create secret docker-registry argocd-image-updater-acr-creds -n argocd --docker-server=$CONTAINER_REPO_URL --docker-username=CONTAINER_REPO_USERNAME --docker-password=CONTAINER_REPO_PASSWORD
-
   uninstall:
     cmds:
       - helm uninstall argocd-apps -n argocd
