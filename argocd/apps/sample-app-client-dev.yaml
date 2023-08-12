@@ -21,7 +21,7 @@ spec:
     chart: helm/base
     helm:
       valueFiles:
-        - https://github.com/Retoxx-dev/sample-app-infra.git/argocd/helmvalues/sample-app-dev/client/values.yaml
+        - 'https://github.com/Retoxx-dev/sample-app-infra.git/argocd/helmvalues/sample-app-dev/client/values.yaml'
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
