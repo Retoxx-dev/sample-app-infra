@@ -43,4 +43,4 @@ configs:
     helm-sample-app-infra:
       name: helm-sample-app-infra
       type: helm
-      url: https://raw.githubusercontent.com/Retoxx-dev/sample-app-infra/main/helm/charts
+      url: https://raw.githubusercontent.com/Retoxx-dev/sample-app-infra/main
