@@ -8,8 +8,9 @@ environment: dev
 replicas: 1
 
 service:
-  enabled: false
+  enabled: true
   internalPort: 80
+  externalPort: 80
 
 readinessProbe:
   path: /health
