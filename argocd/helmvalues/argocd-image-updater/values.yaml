@@ -6,4 +6,4 @@ config:
     - name: ACR
       api_url: https://acrsampleappneu.azurecr.io
       ping: yes
-      credentials: env:argocd-image-updater-acr-creds
+      credentials: pullsecret:argocd/argocd-image-updater-acr-creds
