@@ -6,31 +6,6 @@ config:
     - name: ACR
       prefix: acrsampleappneu.azurecr.io
       api_url: https://acrsampleappneu.azurecr.io
-      ping: yes
-      credentials: ext:/scripts/acrauth.sh
+      credentials: pull:argocd/argocd-image-updater-acr-creds
       default: yes
-
-authScripts:
-  enabled: true
-  scripts:
-    acrauth.sh: |
-      #!/bin/sh
-      AZURE_CLIENT_ID="4276939c-9d80-4418-86f6-ef0bea94e8b8"
-      AZURE_TENANT_ID="4d02d6f1-0a23-46e7-9e4b-67fe15ccc9d2"
-      AZURE_CONTAINER_REGISTRY="acrsampleappneu.azurecr.io"
-      # 1. Get AAD Access token
-      AAD_ACCESS_TOKEN=$(wget --quiet --header="Metadata: true" \
-        --output-document - \
-        "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://management.azure.com/&client_id="$AZURE_CLIENT_ID |
-        python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])")
-
-      # 2. Get refresh token
-      ACR_REFRESH_TOKEN=$(wget --quiet --header="Content-Type: application/x-www-form-urlencoded" \
-        --post-data="grant_type=access_token&service=$AZURE_CONTAINER_REGISTRY&tenant=$AZURE_TENANT_ID&access_token=$AAD_ACCESS_TOKEN" \
-        --output-document - \
-        https://$AZURE_CONTAINER_REGISTRY/oauth2/exchange |
-        python3 -c "import sys, json; print(json.load(sys.stdin)['refresh_token'])")
-
-      # Script output
-      echo "00000000-0000-0000-0000-000000000000:$ACR_REFRESH_TOKEN"
       
