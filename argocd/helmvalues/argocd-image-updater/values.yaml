@@ -29,4 +29,4 @@ authScripts:
         https://$AZURE_CONTAINER_REGISTRY/oauth2/exchange |
         python3 -c "import sys, json; print(json.load(sys.stdin)['refresh_token'])")
       # Script output
-      echo "$AZURE_CLIENT_ID:$ACR_REFRESH_TOKEN"
+      echo "00000000-0000-0000-0000-000000000000:$ACR_REFRESH_TOKEN"
