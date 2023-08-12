@@ -14,16 +14,13 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: sample-app-client-dev
-  sources:
+  source:
     - repoURL: 'acrsampleappneu.azurecr.io'
       targetRevision: 0.0.2
       chart: helm/base
       helm:
         valueFiles:
-          - $values/argocd/helmvalues/sample-app-dev/client/values.yaml
-    - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
-      targetRevision: HEAD
-      ref: values
+          - /argocd/helmvalues/sample-app-dev/client/values.yaml
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
