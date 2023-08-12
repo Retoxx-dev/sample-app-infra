@@ -4,6 +4,8 @@ updateStrategy:
 config:
   registries:
     - name: ACR
+      prefix: acrsampleappneu.azurecr.io
       api_url: https://acrsampleappneu.azurecr.io
       ping: yes
       credentials: pullsecret:argocd/argocd-image-updater-acr-creds
+      default: yes
