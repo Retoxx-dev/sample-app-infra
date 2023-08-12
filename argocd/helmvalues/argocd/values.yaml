@@ -36,16 +36,11 @@ redis:
 ## Config files
 configs:
   repositories:
-    helm-sample-app:
-      name: helm-sample-app
-      type: helm
-      url: acrsampleappneu.azurecr.io
-      enableOCI: "true"
     git-sample-app-infra:
       name: sample-app-infra
       type: git
       url: https://github.com/Retoxx-dev/sample-app-infra.git
     helm-sample-app-infra:
-      name: sample-app-infra
+      name: helm-sample-app-infra
       type: helm
       url: https://raw.githubusercontent.com/Retoxx-dev/sample-app-infra/main/helm/charts
