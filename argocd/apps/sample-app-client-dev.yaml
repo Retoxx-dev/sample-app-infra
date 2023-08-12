@@ -14,34 +14,34 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: sample-app-client-dev
-  sources:
-    - repoURL: 'acrsampleappneu.azurecr.io'
-      targetRevision: 0.0.2
-      chart: helm/base
-      helm:
-        values: |
-        app: sample-app-client
-        image:
-          repository: acrsampleappneu.azurecr.io/client
-          tag: dev
-        environment: dev
-        ingress:
-          enabled: true
-          hostname: dev.dziedzic.me
-        replicas: 1
-        service:
-          enabled: true
-          externalPort: 3000
-          internalPort: 3000
-        readinessProbe:
-          path: /
-          initialDelaySeconds: 10
-        livenessProbe:
-          path: /
-          initialDelaySeconds: 15
-        autoscaling:
-          maxReplicas: 1
-          minReplicas: 1
+  source:
+    repoURL: 'acrsampleappneu.azurecr.io'
+    targetRevision: 0.0.2
+    chart: helm/base
+    helm:
+      values: |
+      app: sample-app-client
+      image:
+        repository: acrsampleappneu.azurecr.io/client
+        tag: dev
+      environment: dev
+      ingress:
+        enabled: true
+        hostname: dev.dziedzic.me
+      replicas: 1
+      service:
+        enabled: true
+        externalPort: 3000
+        internalPort: 3000
+      readinessProbe:
+        path: /
+        initialDelaySeconds: 10
+      livenessProbe:
+        path: /
+        initialDelaySeconds: 15
+      autoscaling:
+        maxReplicas: 1
+        minReplicas: 1
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
