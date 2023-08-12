@@ -29,6 +29,11 @@ tasks:
       - kubectl label secret creds-https-$GIT_REPO_NAME -n argocd argocd.argoproj.io/secret-type=repo-creds
       - kubectl annotate secret creds-https-$GIT_REPO_NAME -n argocd managed-by=argocd.argoproj.io
 
+  argocd:login:
+    desc: Login to ArgoCD CLI
+    cmds:
+      - argocd login $ARGOCD_SERVER_URL
+
   uninstall:
     cmds:
       - helm uninstall argocd-apps -n argocd
