@@ -7,6 +7,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
     argocd-image-updater.argoproj.io/image-list: client=acrsampleappneu.azurecr.io/client
+    argocd-image-updater.argoproj.io/client.force-update: 'true'
     argocd-image-updater.argoproj.io/client.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: git
 spec:
@@ -15,12 +16,12 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: sample-app-client-dev
   source:
-    - repoURL: 'acrsampleappneu.azurecr.io'
-      targetRevision: 0.0.2
-      chart: helm/base
-      helm:
-        valueFiles:
-          - /argocd/helmvalues/sample-app-dev/client/values.yaml
+    repoURL: 'acrsampleappneu.azurecr.io'
+    targetRevision: 0.0.2
+    chart: helm/base
+    helm:
+      valueFiles:
+        - /argocd/helmvalues/sample-app-dev/client/values.yaml
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
