@@ -25,7 +25,7 @@ tasks:
   argocd:gitrepo:creds:
     desc: Add git repo HTTPS creds
     cmds:
-      - kubectl create secret generic creds-https-$GIT_REPO_NAME -n argocd --from-literal=username=username --from-literal=password=$GIT_REPO_PASSWORD
+      - kubectl create secret generic creds-https-$GIT_REPO_NAME -n argocd --from-literal=url=$GIT_REPO_URL --from-literal=username=username --from-literal=password=$GIT_REPO_PASSWORD --from-literal=type="git"
       - kubectl label secret creds-https-$GIT_REPO_NAME -n argocd argocd.argoproj.io/secret-type=repo-creds
       - kubectl annotate secret creds-https-$GIT_REPO_NAME -n argocd managed-by=argocd.argoproj.io
 

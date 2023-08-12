@@ -9,6 +9,7 @@ metadata:
     argocd-image-updater.argoproj.io/image-list: client=acrsampleappneu.azurecr.io/client:dev
     argocd-image-updater.argoproj.io/client.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
 spec:
   project: default
   destination:
