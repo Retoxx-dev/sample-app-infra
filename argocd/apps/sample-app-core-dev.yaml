@@ -19,7 +19,7 @@ spec:
   source:
     repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
     targetRevision: HEAD
-    chart: helm/charts/base
+    path: helm/charts/base
     helm:
       valueFiles:
         - ../../../argocd/helmvalues/sample-app-dev/core/values.yaml
