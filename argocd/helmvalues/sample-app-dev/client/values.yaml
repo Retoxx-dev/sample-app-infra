@@ -26,3 +26,6 @@ livenessProbe:
 autoscaling:
   maxReplicas: 1
   minReplicas: 1
+
+useEnvFromSecret:
+  enabled: false
