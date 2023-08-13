@@ -45,7 +45,7 @@ spec:
           httpGet:
             path: {{ .Values.livenessProbe.path }}
             port: {{ .Values.service.internalPort }}
-{{ if .Values.useEnvFromSecret }}
+{{ if .Values.useEnvFromSecret.enabled }}
         envFrom:
           - secretRef:
               name: "{{ .Values.app }}-{{ .Values.environment }}-env"
