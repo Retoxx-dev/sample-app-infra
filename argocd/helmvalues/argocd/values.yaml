@@ -40,7 +40,3 @@ configs:
       name: sample-app-infra
       type: git
       url: https://github.com/Retoxx-dev/sample-app-infra.git
-    helm-sample-app-infra:
-      name: helm-sample-app-infra
-      type: helm
-      url: https://raw.githubusercontent.com/Retoxx-dev

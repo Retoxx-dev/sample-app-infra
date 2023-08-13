@@ -16,34 +16,16 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: sample-app-client-dev
-  source:
-    repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
-    targetRevision: HEAD
-    path: helm/charts/base
-    helm:
-      values: |
-        app: sample-app-client
-        image:
-          repository: acrsampleappneu.azurecr.io/client
-          tag: dev
-        environment: dev
-        ingress:
-          enabled: true
-          hostname: dev.dziedzic.me
-        replicas: 1
-        service:
-          enabled: true
-          externalPort: 3000
-          internalPort: 3000
-        readinessProbe:
-          path: /
-          initialDelaySeconds: 10
-        livenessProbe:
-          path: /
-          initialDelaySeconds: 15
-        autoscaling:
-          maxReplicas: 1
-          minReplicas: 1
+  sources:
+    - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
+      targetRevision: HEAD
+      path: helm/charts/base
+      helm:
+        valueFiles:
+          - $values/argocd/helmvalues/sample-app-dev/client/values.yaml
+    - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
+      targetRevision: HEAD
+      ref: values
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
