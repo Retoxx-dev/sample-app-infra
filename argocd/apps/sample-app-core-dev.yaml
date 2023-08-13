@@ -6,24 +6,23 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    argocd-image-updater.argoproj.io/image-list: core=acrsampleappneu.azurecr.io/core
+    argocd-image-updater.argoproj.io/core.allow-tags: regexp:^dev-[a-zA-Z0-9]*$
+    argocd-image-updater.argoproj.io/core.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
 spec:
   project: default
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: sample-app-core-dev
-  sources:
-    - repoURL: 'acrsampleappneu.azurecr.io'
-      targetRevision: 0.0.2
-      chart: helm/base
-      helm:
-        valueFiles:
-          - $values/argocd/helmvalues/sample-app-dev/core/values.yaml
-    - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
-      targetRevision: HEAD
-      ref: values
-    - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
-      targetRevision: HEAD
-      path: 'argocd/helmvalues/sample-app-dev/core'
+  source:
+    repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
+    targetRevision: HEAD
+    chart: helm/charts/base
+    helm:
+      valueFiles:
+        - ../../../argocd/helmvalues/sample-app-dev/core/values.yaml
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
