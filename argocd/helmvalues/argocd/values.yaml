@@ -58,7 +58,7 @@ configs:
           redirectURI: https://argocd.dziedzic.me/api/dex/callback
           usernameAttr: email
           emailAttr: email
-          groupsAttr: groups
+          groupsAttr: Group
 
   rbac:
     policy.csv: |
