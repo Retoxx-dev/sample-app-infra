@@ -49,7 +49,7 @@ configs:
       connectors:
       - type: saml
         id: RetoxxDevSaml
-        name: Retoxx Dev SSO
+        name: Retoxx Dev
         config:
           entityIssuer: https://argocd.dziedzic.me/api/dex/callback
           ssoURL: https://login.microsoftonline.com/4d02d6f1-0a23-46e7-9e4b-67fe15ccc9d2/saml2
