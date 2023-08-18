@@ -41,22 +41,23 @@ configs:
       type: git
       url: https://github.com/Retoxx-dev/sample-app-infra.git
 
-  dex.config: |
-    logger:
-      level: debug
-      format: json
-    connectors:
-    - type: saml
-      id: RetoxxDevSaml
-      name: Retoxx Dev SSO
-      config:
-        entityIssuer: https://argocd.dziedzic.me/api/dex/callback
-        ssoURL: https://login.microsoftonline.com/4d02d6f1-0a23-46e7-9e4b-67fe15ccc9d2/saml2
-        caData: $argocd:retoxx-dev-sso-ca
-        redirectURI: https://argocd.dziedzic.me/api/dex/callback
-        usernameAttr: email
-        emailAttr: email
-        groupsAttr: groups
+  cm:
+    dex.config: |
+      logger:
+        level: debug
+        format: json
+      connectors:
+      - type: saml
+        id: RetoxxDevSaml
+        name: Retoxx Dev SSO
+        config:
+          entityIssuer: https://argocd.dziedzic.me/api/dex/callback
+          ssoURL: https://login.microsoftonline.com/4d02d6f1-0a23-46e7-9e4b-67fe15ccc9d2/saml2
+          caData: $argocd:retoxx-dev-sso-ca
+          redirectURI: https://argocd.dziedzic.me/api/dex/callback
+          usernameAttr: email
+          emailAttr: email
+          groupsAttr: groups
 
   rbac:
     policy.csv: |
