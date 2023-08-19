@@ -42,6 +42,7 @@ configs:
       url: https://github.com/Retoxx-dev/sample-app-infra.git
 
   cm:
+    admin.enabled: false
     url: https://argocd.dziedzic.me
     dex.config: |
       logger:
