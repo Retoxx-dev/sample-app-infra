@@ -1,5 +1,5 @@
 module "dns-zone" {
-  source = "Retoxx-dev/dns-zone/azurerm"
+  source  = "Retoxx-dev/dns-zone/azurerm"
   version = "1.0.1"
 
   resource_group_name = azurerm_resource_group.this.name
@@ -8,13 +8,13 @@ module "dns-zone" {
 
   a_records = [
     {
-      name = "@"
-      ttl = 300
+      name               = "@"
+      ttl                = 300
       target_resource_id = one(module.kubernetes-cluster.effective_outbound_ips)
     },
     {
-      name = "*"
-      ttl = 300
+      name               = "*"
+      ttl                = 300
       target_resource_id = one(module.kubernetes-cluster.effective_outbound_ips)
     }
   ]
