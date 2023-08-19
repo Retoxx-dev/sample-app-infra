@@ -5,6 +5,10 @@ metadata:
   labels:
     app: "{{ .Values.app }}"
     environment: "{{ .Values.environment }}"
+  annotations:
+{{- if .Values.useEnvFromSecret.enabled  }}
+    secret.reloader.stakater.com/reload: "{{ .Values.app }}-{{ .Values.environment }}-env"
+{{- end }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
