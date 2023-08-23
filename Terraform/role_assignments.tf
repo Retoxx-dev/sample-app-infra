@@ -19,6 +19,13 @@ module "role-assignments" {
         module.kubernetes-cluster.nodepool_identity_object_id
       ]
       role_names = ["AcrPull"]
+    },
+    {
+      scope = module.storage-account-logs.id
+      principal_ids = [
+        module.kubernetes-cluster.nodepool_identity_object_id
+      ]
+      role_names = ["Storage Blob Data Contributor"]
     }
   ]
 }
