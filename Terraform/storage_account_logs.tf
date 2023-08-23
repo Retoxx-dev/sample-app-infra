@@ -6,13 +6,13 @@ module "storage-account-logs" {
   location            = azurerm_resource_group.this.location
 
   name = "st${replace(local.naming_convention_dash, "-", "")}logs"
-  
+
   blob_properties = {
-    versioning_enabled = true
+    versioning_enabled  = true
     change_feed_enabled = true
   }
 
-  storage_containers =[
+  storage_containers = [
     {
       name = "loki"
     },
