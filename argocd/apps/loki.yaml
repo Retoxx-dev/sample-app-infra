@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring
+  sources:
+    - repoURL: 'https://grafana.github.io/helm-charts'
+      targetRevision: 5.14.1
+      chart: loki
+      helm:
+        valueFiles:
+          - $values/argocd/helmvalues/loki/values.yaml
+    - repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
