@@ -29,6 +29,8 @@ read: &commonConfig
   extraArgs:
     - -config.expand-env=true
 write:
+  replicas: 1
   <<: *commonConfig
 backend:
+  replicas: 1
   <<: *commonConfig
