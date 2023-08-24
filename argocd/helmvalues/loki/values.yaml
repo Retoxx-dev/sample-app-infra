@@ -23,14 +23,13 @@ loki:
       cache_location: /var/loki/boltdb-shipper-cache
       cache_ttl: 24h
 read: &commonConfig
+  replicas: 1
   persistence:
     size: 10Gi
     storageClassName: default
   extraArgs:
     - -config.expand-env=true
 write:
-  replicas: 1
   <<: *commonConfig
 backend:
-  replicas: 1
   <<: *commonConfig
