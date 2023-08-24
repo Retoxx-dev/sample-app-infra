@@ -1,0 +1,34 @@
+loki:
+  auth_enabled: false
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+  storage:
+    type: azure
+    azure:
+      accountName: stsampleappneulogs
+      userAssignedId: 4276939c-9d80-4418-86f6-ef0bea94e8b8
+  schemaConfig:
+    configs:
+      - from: "2022-08-01"
+        store: boltdb-shipper
+        object_store: azure
+        schema: v12
+        index:
+          prefix: loki_index_
+          period: 24h
+  storage_config:
+    boltdb_shipper:
+      shared_store: azure
+      active_index_directory: /var/loki/boltdb-shipper-active
+      cache_location: /var/loki/boltdb-shipper-cache
+      cache_ttl: 24h
+read: &commonConfig
+  persistence:
+    size: 10Gi
+    storageClassName: default
+  extraArgs:
+    - -config.expand-env=true
+write:
+  <<: *commonConfig
+backend:
+  <<: *commonConfig

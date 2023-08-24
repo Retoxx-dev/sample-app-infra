@@ -1,0 +1,106 @@
+grafana:
+  grafana.ini:
+    azure:
+      managed_identity_enabled: true
+      managed_identity_client_id: 4276939c-9d80-4418-86f6-ef0bea94e8b8
+    server:
+      root_url: https://grafana.dziedzic.me
+    auth.azuread:
+      enalbed: true
+      name: Retoxx Dev
+      allow_sign_up: true
+      auto_login: true
+      scopes: openid email profile
+      auth_url: https://login.microsoftonline.com/4d02d6f1-0a23-46e7-9e4b-67fe15ccc9d2/oauth2/v2.0/authorize
+      token_url: https://login.microsoftonline.com/4d02d6f1-0a23-46e7-9e4b-67fe15ccc9d2/oauth2/v2.0/token
+      allowed_domains: ""
+      allowed_groups: ""
+      role_attribute_strict: false
+      allow_assign_grafana_admin: true
+      skip_org_role_sync: false
+  envFromSecrets:
+    - name: grafana-sso
+  command:
+    - "sh"
+  args:
+    - "-c"
+    - "grafana-cli admin reset-admin-password ${GF_SECURITY_ADMIN_PASSWORD} && /run.sh" #https://github.com/grafana/grafana/issues/49055
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/tls-acme: true
+      kubernetes.io/ingress.class: "nginx"
+      nginx.ingress.kubernetes.io/ssl-redirect: true
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      cert-manager.io/cluster-issuer: letsencrypt
+      cert-manager.io/acme-challenge-type: http01
+    hosts:
+      - grafana.dziedzic.me
+    tls:
+      - secretName: grafana-tls
+        hosts:
+          - grafana.dziedzic.me
+  plugins:
+    - grafana-kubernetes-app
+  sidecar:
+    dashboards:
+      enabled: true
+      searchNamespace: monitoring
+    alerts:
+      enabled: true
+      searchNamespace: monitoring
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: default
+          orgId: 1
+          folder: ""
+          type: file
+          disableDeletion: false
+          editable: true
+          updateIntervalSeconds: 3
+          options:
+            path: /var/lib/grafana/dashboards/default
+  dashboards:
+    default:
+      azure-resources-overview:
+        gnetId: 14986
+        revision: 2
+        datasource: Azure Monitor
+      azure-storage-account:
+        gnetId: 14469
+        revision: 3
+        datasource: Azure Monitor
+      azure-key-vault:
+        gnetId: 14476
+        revision: 2
+        datasource: Azure Monitor
+  additionalDataSources:
+    - name: Logs
+      type: loki
+      access: proxy
+      url: http://loki-gateway.monitoring.svc.cluster.local
+      jsonData:
+        maxLines: 4000
+    - name: Azure Monitor
+      type: grafana-azure-monitor-datasource
+      access: proxy
+      orgId: 1
+      isDefault: false
+      jsonData:
+        cloudName: azuremonitor
+        azureAuthType: msi
+        subscriptionId: 09bcf8d4-35ea-46fc-90d1-b513d4c00d54
+        azureLogAnalyticsSameAs: true
+      editable: true
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: default
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi

@@ -1,0 +1,17 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: grafana-sso
+  namespace: monitoring
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: azure-cluster-secret-store
+    kind: ClusterSecretStore
+  target:
+    name: "grafana-sso"
+    creationPolicy: Owner
+  dataFrom:
+  - extract:
+      key: "grafana-sso"
+      decodingStrategy: None
