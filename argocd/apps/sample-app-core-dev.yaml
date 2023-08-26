@@ -1,32 +1,32 @@
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: sample-app-core-dev
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
-    argocd-image-updater.argoproj.io/image-list: core=acrsampleappneu.azurecr.io/core
-    argocd-image-updater.argoproj.io/core.allow-tags: regexp:^dev-[a-zA-Z0-9]*$
-    argocd-image-updater.argoproj.io/core.update-strategy: latest
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/git-branch: main
-    argocd-image-updater.argoproj.io/core.pull-secret: ext:/scripts/acrauth.sh
-spec:
-  project: default
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: sample-app-core-dev
-  source:
-    repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
-    targetRevision: HEAD
-    path: helm/charts/base
-    helm:
-      valueFiles:
-        - ../../../argocd/helmvalues/sample-app-dev/core/values.yaml
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-    automated:
-      prune: true
-      selfHeal: true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: sample-app-core-dev
+#   namespace: argocd
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "0"
+#     argocd-image-updater.argoproj.io/image-list: core=acrsampleappneu.azurecr.io/core
+#     argocd-image-updater.argoproj.io/core.allow-tags: regexp:^dev-[a-zA-Z0-9]*$
+#     argocd-image-updater.argoproj.io/core.update-strategy: latest
+#     argocd-image-updater.argoproj.io/write-back-method: git
+#     argocd-image-updater.argoproj.io/git-branch: main
+#     argocd-image-updater.argoproj.io/core.pull-secret: ext:/scripts/acrauth.sh
+# spec:
+#   project: default
+#   destination:
+#     server: 'https://kubernetes.default.svc'
+#     namespace: sample-app-core-dev
+#   source:
+#     repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
+#     targetRevision: HEAD
+#     path: helm/charts/base
+#     helm:
+#       valueFiles:
+#         - ../../../argocd/helmvalues/sample-app-dev/core/values.yaml
+#   syncPolicy:
+#     syncOptions:
+#       - CreateNamespace=true
+#     automated:
+#       prune: true
+#       selfHeal: true
