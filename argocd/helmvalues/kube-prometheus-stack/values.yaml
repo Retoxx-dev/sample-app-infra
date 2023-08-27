@@ -4,7 +4,7 @@ grafana:
       managed_identity_enabled: true
       managed_identity_client_id: e65f6118-e50e-4413-88f0-118044a5fcec
     server:
-      root_url: https://grafana.dziedzic.me
+      root_url: "https://%(domain)s/"
     auth.azuread:
       enalbed: true
       name: Retoxx Dev
