@@ -63,6 +63,7 @@ configs:
     resource.customizations.ignoreDifferences.monitoring.coreos.com_ServiceMonitor: |
       jsonPointers:
       - /spec/endpoints
+      - /spec/attachMetadata
 
   rbac:
     policy.default: role:readonly
