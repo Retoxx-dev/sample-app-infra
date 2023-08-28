@@ -16,6 +16,12 @@ module "key-vault-secrets" {
     {
       name = "grafana-sso"
     },
+    {
+      name = "pgadmin-sso"
+    },
+    {
+      name = "pgadmin-admin-password"
+    },
     #################################################################
     # DEV SECRETS
     #################################################################
