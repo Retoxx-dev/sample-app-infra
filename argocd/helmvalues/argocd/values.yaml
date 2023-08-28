@@ -60,6 +60,9 @@ configs:
           usernameAttr: email
           emailAttr: email
           groupsAttr: Group
+    resource.customizations.ignoreDifferences.monitoring.coreos.com_ServiceMonitor: |
+      jsonPointers:
+      - /spec/endpoints
 
   rbac:
     policy.default: role:readonly
