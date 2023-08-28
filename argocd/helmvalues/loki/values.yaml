@@ -6,7 +6,7 @@ loki:
     type: azure
     azure:
       accountName: stsampleappneulogs
-      userAssignedId: e65f6118-e50e-4413-88f0-118044a5fcec
+      userAssignedId: 49e4dc59-a04a-4a3d-8d11-a2b15b63ee85
   schemaConfig:
     configs:
       - from: "2022-08-01"

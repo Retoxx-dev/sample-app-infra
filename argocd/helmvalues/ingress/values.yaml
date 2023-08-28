@@ -5,4 +5,4 @@ controller:
       service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
     
     # External IP address of the load balancer given by Azure during cluster creation
-    loadBalancerIP: "20.223.30.125"
+    loadBalancerIP: "20.166.177.205"

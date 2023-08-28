@@ -2,11 +2,12 @@ grafana:
   grafana.ini:
     azure:
       managed_identity_enabled: true
-      managed_identity_client_id: e65f6118-e50e-4413-88f0-118044a5fcec
+      managed_identity_client_id: 49e4dc59-a04a-4a3d-8d11-a2b15b63ee85
     server:
-      root_url: "https://%(domain)s/"
+      domain: monitoring.dziedzic.me
+      root_url: https://monitoring.dziedzic.me
     auth.azuread:
-      enalbed: true
+      enabled: true
       name: Retoxx Dev
       allow_sign_up: true
       auto_login: true
@@ -29,17 +30,16 @@ grafana:
     enabled: true
     annotations:
       kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: "nginx"
+      kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       cert-manager.io/cluster-issuer: letsencrypt
       cert-manager.io/acme-challenge-type: http01
     hosts:
-      - grafana.dziedzic.me
+      - monitoring.dziedzic.me
     tls:
-      - secretName: grafana-tls
+      - secretName: monitoring-tls
         hosts:
-          - grafana.dziedzic.me
+          - monitoring.dziedzic.me
   plugins:
     - grafana-kubernetes-app
   sidecar:

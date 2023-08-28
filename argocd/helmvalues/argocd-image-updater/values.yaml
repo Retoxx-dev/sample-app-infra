@@ -14,7 +14,7 @@ authScripts:
   scripts:
     acrauth.sh: |
       #!/bin/sh
-      AZURE_CLIENT_ID="4276939c-9d80-4418-86f6-ef0bea94e8b8"
+      AZURE_CLIENT_ID="49e4dc59-a04a-4a3d-8d11-a2b15b63ee85"
       AZURE_TENANT_ID="4d02d6f1-0a23-46e7-9e4b-67fe15ccc9d2"
       AZURE_CONTAINER_REGISTRY="acrsampleappneu.azurecr.io"
       # 1. Get AAD Access token

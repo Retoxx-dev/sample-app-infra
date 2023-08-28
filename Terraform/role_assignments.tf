@@ -26,6 +26,13 @@ module "role-assignments" {
         module.kubernetes-cluster.nodepool_identity_object_id
       ]
       role_names = ["Storage Blob Data Contributor"]
+    },
+    {
+      scope = azurerm_resource_group.this.id
+      principal_ids = [
+        module.kubernetes-cluster.nodepool_identity_object_id
+      ]
+      role_names = ["Reader"]
     }
   ]
 }
