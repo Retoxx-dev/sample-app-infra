@@ -20,20 +20,6 @@ existingSecret: pgadmin-admin-password
 secretKeys:
   pgadminPasswordKey: password
 
-serverDefinitions:
-  enabled: true
-  servers:
-    postgresql:
-      Name: "sample-app"
-      Group: "Servers"
-      Port: 5432
-      Username: "mAiplm1druv8kmhC"
-      Host: "psql-sample-app-neu.postgres.database.azure.com"
-      SSLMode: "prefer"
-      MaintenanceDB: "postgres"
-      Shared: true
-      PassFile: "/var/lib/pgadmin/storage/pgadmin/sampleapp.pgpass"
-
 env:
   email: kacper.dziedzic@wp.pl
   enhanced_cookie_protection: "False"
@@ -43,10 +29,4 @@ extraSecretMounts:
     secret: pgadmin-sso
     subPath: config_local.py
     mountPath: "/pgadmin4/config_local.py"
-    readOnly: true
-  
-  - name: pgpassfile
-    secret: pgadmin-pgpass
-    subPath: pgpassfile
-    mountPath: "/var/lib/pgadmin/storage/pgadmin/file.pgpass"
     readOnly: true
