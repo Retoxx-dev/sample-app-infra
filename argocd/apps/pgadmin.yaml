@@ -12,9 +12,9 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: pgadmin
   sources:
-    - repoURL: 'https://helm.runix.net/runix'
+    - repoURL: 'https://helm.runix.net/'
       targetRevision: 1.15.5
-      chart: pgadmin4
+      chart: runix/pgadmin4
       helm:
         valueFiles:
           - $values/argocd/helmvalues/pgadmin/values.yaml
