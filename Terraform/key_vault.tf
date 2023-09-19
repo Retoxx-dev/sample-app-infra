@@ -26,12 +26,12 @@ module "key-vault" {
 
   self_service_principal_id = "945fbe56-103c-44d4-868d-0b40bff00eb0"
 
-  network_acls = {
-    bypass                     = "AzureServices"
-    default_action             = "Deny"
-    ip_rules                   = ["185.157.14.184"]
-    virtual_network_subnet_ids = []
-  }
+  # network_acls = {
+  #   bypass                     = "AzureServices"
+  #   default_action             = "Deny"
+  #   ip_rules                   = ["185.157.14.184"]
+  #   virtual_network_subnet_ids = []
+  # } Temporary disabled, to be enabled when self-hosted GitLab runners are configured
 
   private_endpoint = {
     name                          = "pep-kv-${local.naming_convention_dash}"
