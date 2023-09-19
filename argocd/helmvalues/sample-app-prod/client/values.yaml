@@ -1,0 +1,31 @@
+app: sample-app-client
+image:
+  repository: acrsampleappneu.azurecr.io/client
+  tag: prod
+
+environment: prod
+
+ingress:
+  enabled: true
+  hostname: dziedzic.me
+
+replicas: 1
+
+service:
+  enabled: true
+  externalPort: 3000
+  internalPort: 3000
+
+readinessProbe:
+  path: /
+  initialDelaySeconds: 10
+livenessProbe:
+  path: /
+  initialDelaySeconds: 15
+
+autoscaling:
+  maxReplicas: 1
+  minReplicas: 1
+
+useEnvFromSecret:
+  enabled: false

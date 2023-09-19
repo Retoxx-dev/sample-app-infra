@@ -8,9 +8,6 @@ module "key-vault-secrets" {
     # INFRA AND TOOLS SECRETS
     #################################################################
     {
-      name = "rabbitmq-password-dev"
-    },
-    {
       name = "retoxx-dev-sso-ca"
     },
     {
@@ -26,10 +23,25 @@ module "key-vault-secrets" {
     # DEV SECRETS
     #################################################################
     {
+      name = "rabbitmq-password-dev"
+    },
+    {
       name = "sample-app-core-dev-env"
     },
     {
       name = "sample-app-messaging-dev-env"
+    },
+    #################################################################
+    # PROD SECRETS
+    #################################################################
+    {
+      name = "rabbitmq-password-prod"
+    },
+    {
+      name = "sample-app-core-prod-env"
+    },
+    {
+      name = "sample-app-messaging-prod-env"
     }
   ]
 }
