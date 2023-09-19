@@ -1,0 +1,32 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-app-messaging-prod
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+    argocd-image-updater.argoproj.io/image-list: messaging=acrsampleappneu.azurecr.io/messaging
+    argocd-image-updater.argoproj.io/messaging.allow-tags: regexp:^prod-[a-zA-Z0-9]*$
+    argocd-image-updater.argoproj.io/messaging.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/messaging.pull-secret: ext:/scripts/acrauth.sh
+spec:
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: sample-app-messaging-prod
+  source:
+    repoURL: 'https://github.com/Retoxx-dev/sample-app-infra.git'
+    targetRevision: HEAD
+    path: helm/charts/base
+    helm:
+      valueFiles:
+        - ../../../argocd/helmvalues/sample-app-prod/messaging/values.yaml
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

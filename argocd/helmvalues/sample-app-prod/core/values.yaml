@@ -1,0 +1,32 @@
+app: sample-app-core
+image:
+  repository: acrsampleappneu.azurecr.io/core
+  tag: prod
+
+environment: prod
+
+ingress:
+  enabled: true
+  hostname: api.dziedzic.me
+
+replicas: 1
+
+service:
+  enabled: true
+  externalPort: 80
+  internalPort: 80
+
+readinessProbe:
+  path: /health
+  initialDelaySeconds: 10
+livenessProbe:
+  path: /health
+  initialDelaySeconds: 15
+
+autoscaling:
+  maxReplicas: 1
+  minReplicas: 1
+
+useEnvFromSecret: 
+  enabled: true
+  refreshInterval: 24h

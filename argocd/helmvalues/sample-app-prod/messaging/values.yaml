@@ -1,0 +1,28 @@
+app: sample-app-messaging
+image:
+  repository: acrsampleappneu.azurecr.io/messaging
+  tag: prod
+
+environment: prod
+
+replicas: 1
+
+service:
+  enabled: true
+  internalPort: 80
+  externalPort: 80
+
+readinessProbe:
+  path: /health
+  initialDelaySeconds: 10
+livenessProbe:
+  path: /health
+  initialDelaySeconds: 15
+
+autoscaling:
+  maxReplicas: 1
+  minReplicas: 1
+
+useEnvFromSecret:
+  enabled: true
+  refreshInterval: 24h

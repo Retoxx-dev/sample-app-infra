@@ -1,0 +1,3 @@
+auth:
+  username: rabbitmq-prod
+  existingPasswordSecret: rabbitmq-password-prod
