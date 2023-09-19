@@ -1,0 +1,8 @@
+helm:
+  parameters:
+  - name: image.name
+    value: acrsampleappneu.azurecr.io/core
+    forcestring: true
+  - name: image.tag
+    value: prod-a2744f4
+    forcestring: true
