@@ -4,5 +4,5 @@ helm:
     value: acrsampleappneu.azurecr.io/messaging
     forcestring: true
   - name: image.tag
-    value: prod-f67b4a4
+    value: prod-27f9bf3
     forcestring: true
